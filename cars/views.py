@@ -24,6 +24,9 @@ class CarsListView(ListView):
     template_name = 'cars.html'
     context_object_name = 'cars'
 
+    def get_queryset(self):
+        return super().get_queryset().order_by('model')
+
 
 class NewCarView(View):
 
