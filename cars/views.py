@@ -25,7 +25,13 @@ class CarsListView(ListView):
     context_object_name = 'cars'
 
     def get_queryset(self):
+        # Nesse query, todos os modelos são retornados da mesma forma que retorna no objects.all().
+        # O super faz referência a ListView. A utilização de super() é para invocar a herança.
         cars = super().get_queryset().order_by('model')
+        search = self.request.GET.get('search')
+        if search:
+            cars = cars.filter(model__icontains=search).order_by('model')
+        return cars
 
 
 class NewCarView(View):
