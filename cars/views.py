@@ -25,7 +25,7 @@ class CarsListView(ListView):
     context_object_name = 'cars'
 
     def get_queryset(self):
-        return super().get_queryset().order_by('model')
+        cars = super().get_queryset().order_by('model')
 
 
 class NewCarView(View):
