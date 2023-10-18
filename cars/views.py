@@ -12,11 +12,18 @@ class CarsListView(ListView):
     context_object_name = 'cars'
 
     def get_queryset(self):
+        # Nesse query, todos os modelos são retornados da mesma forma que retorna no objects.all().
+        # O super faz referência a ListView. A utilização de super() é para invocar a herança.
         cars = super().get_queryset().order_by('model')
         search = self.request.GET.get('search')
         if search:
             cars = cars.filter(model__icontains=search).order_by('model')
         return cars
+
+
+class CarDetailView(DetailView):
+    model = Car
+    template_name = 'car_detail.html'
 
 
 @method_decorator(login_required(login_url='login'), name="dispatch")
@@ -25,13 +32,10 @@ class NewCarCreateView(CreateView):
     form_class = CarModelForm
     template_name = 'new_car.html'
     success_url = '/cars/'
+    # Pagina seguinte.
 
 
-class CarDetailView(DetailView):
-    model = Car
-    template_name = 'car_detail.html'
-
-
+@method_decorator(login_required(login_url='login'), name="dispatch")
 class CarUpdateView(UpdateView):
     model = Car
     form_class = CarModelForm
@@ -41,6 +45,7 @@ class CarUpdateView(UpdateView):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
 
 
+@method_decorator(login_required(login_url='login'), name="dispatch")
 class CarDeleteView(DeleteView):
     model = Car
     template_name = 'car_delete.html'
