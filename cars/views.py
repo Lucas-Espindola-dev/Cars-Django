@@ -1,6 +1,8 @@
 from cars.models import Car
 from cars.forms import CarModelForm
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 
@@ -19,6 +21,7 @@ class CarsListView(ListView):
         return cars
 
 
+@method_decorator(login_required, name='dispatch')
 class NewCarCreateView(CreateView):
     model = Car
     form_class = CarModelForm
